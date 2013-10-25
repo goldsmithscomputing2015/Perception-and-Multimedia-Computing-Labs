@@ -9,7 +9,8 @@ color b;
 color y;
 
 void setup(){
-	size(200,400);
+	hint(ENABLE_RETINA_PIXELS);
+	size(200,400, "processing.core.PGraphicsRetina2D");
 	rectMode(CORNER);
 	redyellow = createImage(100,100,RGB);
 	bluered = createImage(100,100,RGB);
