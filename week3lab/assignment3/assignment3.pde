@@ -1,51 +1,80 @@
 class HSBcolour {
   float h, s, b;
-  HSBcolour() {
-  };
-  HSBcolour(color c) {
-    float max = max(red(c), green(c), blue(c));
-    float min = min(red(c), green(c), blue(c));
 
-    if (max == red(c)) {
-      h = ( ( PI / 3 ) * ( ( green(c) - blue(c) ) / ( max - min ) ) ) % ( 2 * PI );
+  // Empty constructor because it seems like a good idea
+  HSBcolour() {};
+
+  // Allow users to set hsb values directly
+  HSBcolour(float _h, float _s, float _b) {
+    this.h = _h;
+    this.s = _s;
+    this.b = _b;
+  }
+
+  // Allow users to set value by standard colour
+  HSBcolour(color c) {
+    this.convert(red(c),green(c),blue(c));
+  }
+
+  // Allow users to set value by object of class RGBcolour
+  HSBcolour(RGBcolour c) {
+    this.convert(c.r,c.g,c.b);
+  }
+
+  // Perform calculation
+  convert(float r, float g, float b) {
+    float max = max(r, g, b);
+    float min = min(r, g, b);
+
+    if (max == r) {
+      this.h = ( ( PI / 3 ) * ( ( g - b ) / ( max - min ) ) ) % ( 2 * PI );
     }
-    else if (max == green(c)) {
-      h = ( 2*PI / 3 + PI / 3 ) * ( ( blue( c ) - red( c ) ) / ( max - min ) );
+    else if (max == g) {
+      this.h = ( 2*PI / 3 + PI / 3 ) * ( (b - r ) / ( max - min ) );
     }
-    else if (max == blue(c)) {
-      h = ( 4*PI / 3 + PI / 3 ) * ( ( red( c ) - green( c ) ) / ( max - min ) );
+    else if (max == b) {
+      this.h = ( 4*PI / 3 + PI / 3 ) * ( ( r - g ) / ( max - min ) );
     }
     else {
-      h = 0;
+      this.h = 0;
     }
 
-    if (Float.isNaN(h)) {
-      h = 0;
+    if (Float.isNaN(this.h)) {
+      this.h = 0;
     }
 
     if (max == 0) {
-      s = 0;
+      this.s = 0;
     }
 
     else {
-      s = 1 - min / max;
+      this.s = 1 - min / max;
     }
 
-    b = max;
-  }
-  HSBcolour(float _h, float _s, float _b) {
-    h = _h;
-    s = _s;
-    b = _b;
+    this.b = max;
   }
 }
 
 class RGBcolour {
-  // only properties of a class should be declared at this scope
-  // unless they're specifically declared as private
   float r, g, b;
 
-  RGBcolour(float h, float s, float b) {
+  // Empty constructor because it seems like a good idea
+  RGBcolour() {};
+
+  // Allow users to set rgb properties directly
+  RGBcolour(float _r, float _g, float _b){
+    this.r = _r;
+    this.g = _g;
+    this.b = _b;
+  }
+
+  // Allow users to instantiate based on an object of type HSBcolour
+  RGBcolour(HSBcolour c){
+    this.convert(c.h,c.s,c,b);
+  }
+
+  // Perform calculation
+  convert(float h, float s, float b) {
     float f, p, q, t;
     int i;
 
@@ -60,21 +89,33 @@ class RGBcolour {
     switch(i) {
       case 0:
         this.r = b;
+        this.g = t;
+        this.b = p;
         break;
       case 1:
         this.r = q;
+        this.g = b;
+        this.b = p;
         break;
       case 2:
         this.r = p;
+        this.g = b;
+        this.b = t;
         break;
       case 3:
         this.r = p;
+        this.g = q;
+        this.b = b;
         break;
       case 4:
         this.r = t;
+        this.g = p;
+        this.b = b;
         break;
       case 5:
         this.r = b;
+        this.g = p;
+        this.b = q;
         break;
       default:
         println("ERROR");
@@ -83,67 +124,6 @@ class RGBcolour {
     this.r = ceil(this.r);
     this.g = ceil(this.g);
     this.b = ceil(this.b);
-
-  }
-
-  int redValue() {
-    
-  }
-
-  int greenValue() {
-    float green;
-    switch(i) {
-    case 0:
-      this.g = t;
-      break;
-    case 1:
-      this.g = b;
-      break;
-    case 2:
-      this.g = b;
-      break;
-    case 3:
-      this.g = q;
-      break;
-    case 4:
-      this.g = p;
-      break;
-    case 5:
-      this.g = p;
-      break;
-    default:
-      println("ERROR");
-      break;
-    }
-    this.g = ceil(this.g);
-  }
-
-  int blueValue() {
-    float blue;
-    switch(i) {
-    case 0:
-      blue = p;
-      break;
-    case 1:
-      blue = p;
-      break;
-    case 2:
-      blue = t;
-      break;
-    case 3:
-      blue = b;
-      break;
-    case 4:
-      blue = b;
-      break;
-    case 5:
-      blue = q;
-      break;
-    default:
-      println("ERROR");
-      break;
-    }
-    return ceil(blue);
   }
 }
 
@@ -154,6 +134,9 @@ RGBcolour c2;
 float h, s, b;
 
 void setup() {
+
+  // @todo: best write some code to test this
+
   size(400, 200);
   colorMode(RGB);
   h = PI/4;
