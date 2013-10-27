@@ -22,7 +22,7 @@ class HSBcolour {
   }
 
   // Perform calculation
-  convert(float r, float g, float b) {
+  void convert(float r, float g, float b) {
     float max = max(r, g, b);
     float min = min(r, g, b);
 
@@ -74,7 +74,7 @@ class RGBcolour {
   }
 
   // Perform calculation
-  convert(float h, float s, float b) {
+  void convert(float h, float s, float b) {
     float f, p, q, t;
     int i;
 
