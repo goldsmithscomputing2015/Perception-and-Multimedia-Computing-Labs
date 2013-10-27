@@ -70,7 +70,7 @@ class RGBcolour {
 
   // Allow users to instantiate based on an object of type HSBcolour
   RGBcolour(HSBcolour c){
-    this.convert(c.h,c.s,c,b);
+    this.convert(c.h,c.s,c.b);
   }
 
   // Perform calculation
