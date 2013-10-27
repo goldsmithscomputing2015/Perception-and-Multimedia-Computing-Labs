@@ -41,82 +41,85 @@ class HSBcolour {
 }
 
 class RGBcolour {
+  // only properties of a class should be declared at this scope
+  // unless they're specifically declared as private
+  float r, g, b;
 
-  float h, s, b;
-  int i;
-  float f, p, q, t;
-  float red, green, blue;
+  RGBcolour(float h, float s, float b) {
+    float f, p, q, t;
+    int i;
 
-  RGBcolour(float _h, float _s, float _b) {
-    h = _h;
-    s = _s;
-    b = 255*_b;
-    calculate();
-  }
-
-  void calculate() {
+    b = 255*b;
+    
     i = floor(3*h/PI);
     f = (3*h/PI) - i;
     p = b*(1-s);
     q = b*(1-f*s);
     t = b*(1-(1-f)*s);
+
+    switch(i) {
+      case 0:
+        this.r = b;
+        break;
+      case 1:
+        this.r = q;
+        break;
+      case 2:
+        this.r = p;
+        break;
+      case 3:
+        this.r = p;
+        break;
+      case 4:
+        this.r = t;
+        break;
+      case 5:
+        this.r = b;
+        break;
+      default:
+        println("ERROR");
+        break;
+    }
+    this.r = ceil(this.r);
+    this.g = ceil(this.g);
+    this.b = ceil(this.b);
+
   }
 
   int redValue() {
-    switch(i) {
-    case 0:
-      red = b;
-      break;
-    case 1:
-      red = q;
-      break;
-    case 2:
-      red = p;
-      break;
-    case 3:
-      red = p;
-      break;
-    case 4:
-      red = t;
-      break;
-    case 5:
-      red = b;
-      break;
-    default:
-      println("ERROR");
-      break;
-    }
-    return ceil(red);
+    
   }
 
   int greenValue() {
+    float green;
     switch(i) {
     case 0:
-      green = t;
+      this.g = t;
       break;
     case 1:
-      green = b;
+      this.g = b;
       break;
     case 2:
-      green = b;
+      this.g = b;
       break;
     case 3:
-      green = q;
+      this.g = q;
       break;
     case 4:
-      green = p;
+      this.g = p;
       break;
     case 5:
-      green = p;
+      this.g = p;
       break;
     default:
       println("ERROR");
       break;
     }
-    return ceil(green);
+    this.g = ceil(this.g);
   }
 
   int blueValue() {
+    float blue;
     switch(i) {
     case 0:
       blue = p;
